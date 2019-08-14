@@ -1,25 +1,22 @@
-#NEI <- readRDS("summarySCC_PM25.rds")
-# SCC <- readRDS("Source_Classification_Code.rds")
+NEI <- readRDS("summarySCC_PM25.rds")
+SCC <- readRDS("Source_Classification_Code.rds")
 
 #Pulls out all years in dataset
 years <- unique(NEI$year)
-#Group data by year only - Returns list of 4 dataframes for each year
-NEIyr <- split(NEI, NEI$year) 
 
-Balt99 <- subset(NEIyr$'1999', fips == "24510")
-Balt02 <- subset(NEIyr$'2002', fips == "24510")
-Balt05 <- subset(NEIyr$'2005', fips == "24510")
-Balt08 <- subset(NEIyr$'2008', fips == "24510")
+##  #Pulls out Baltimore only
+BaltNEI <- subset(NEI, fips =="24510")
 
-Baltsums <- c(sum(Balt99$Emissions),sum(Balt02$Emissions),sum(Balt05$Emissions),sum(Balt08$Emissions))
+## # Aggregates sums of all types of Emissions by year only
+Baltsums <- aggregate(BaltNEI$Emissions, list(BaltNEI$year), sum)
+names(Baltsums) <- c("Year", "Total") ## Adds Data labels
 
 # ###Graphics device for in R viewing
 # par(mfrow = c(1,1), mar = c(4,4,2,1))
 # plot(years, Baltsums)
 
-
 ###Graphics device to create .png
-png(filename = "Plot1.png", width = 480, height = 480)
-plot(years, Baltsums)
+png(filename = "Plot2.png", width = 480, height = 480)
+plot(Baltsums$Year, Baltsums$Total, ylab = "Total Emissions", xlab = "Year")
 ##Closes out .png device if used
 dev.off()
