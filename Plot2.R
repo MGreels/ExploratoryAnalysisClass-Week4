@@ -1,5 +1,5 @@
-NEI <- readRDS("summarySCC_PM25.rds")
-SCC <- readRDS("Source_Classification_Code.rds")
+#NEI <- readRDS("summarySCC_PM25.rds")
+#SCC <- readRDS("Source_Classification_Code.rds")
 
 #Pulls out all years in dataset
 years <- unique(NEI$year)
@@ -13,10 +13,10 @@ names(Baltsums) <- c("Year", "Total") ## Adds Data labels
 
 # ###Graphics device for in R viewing
 # par(mfrow = c(1,1), mar = c(4,4,2,1))
-# plot(years, Baltsums)
+# plot(Baltsums$Year, Baltsums$Total, ylab = "Total Emissions", xlab = "Year")
 
 ###Graphics device to create .png
 png(filename = "Plot2.png", width = 480, height = 480)
-plot(Baltsums$Year, Baltsums$Total, ylab = "Total Emissions", xlab = "Year")
+plot(Baltsums$Year, Baltsums$Total, ylab = "Total Emissions", xlab = "Year", main = "Total Emissions in Baltimore City")
 ##Closes out .png device if used
 dev.off()
